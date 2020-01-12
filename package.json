@@ -1,0 +1,19 @@
+{
+  "name": "typeql",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "ts-node-dev --no-notify --respawn src/index.ts",
+    "test": "ts-node-dev src/__test__/index.ts | tnyan"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/tape": "^4.2.33",
+    "tape": "^4.13.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.4"
+  }
+}
