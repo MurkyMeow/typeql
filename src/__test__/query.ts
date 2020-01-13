@@ -1,24 +1,37 @@
 import tape from 'tape'
 import { query } from '../index'
 
+const gql = ([literal]: TemplateStringsArray) => literal
+  .replace(/\n/g, '')
+  .replace(/ +/g, ' ')
+  .replace(/^ /, '')
+  .replace(/ $/, '')
+  .replace(/ ?({|}|:|,) ?/g, '$1')
+  .replace(/\.\.\. /g, '...')
+
 tape('transform query', t => {
-  const actual = query({
-    id: 'Int!',
-    photo: 'String',
-    friends: {
+  const actual = query('Me', {
+    me: {
       id: 'Int!',
       photo: 'String',
+      friends: {
+        id: 'Int!',
+        photo: 'String',
+      },
     },
   })
-  const expected = `
-    query {
-      id
-      photo
-      friends {
+  const expected = gql`
+    query Me {
+      me {
         id
         photo
+        friends {
+          id
+          photo
+        }
       }
     }
   `
-  t.equal(actual, expected)
+  t.strictEqual(actual, expected)
+  t.end()
 })

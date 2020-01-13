@@ -12,7 +12,7 @@ interface GraphQLType {
 type QueryField =
   | keyof GraphQLType
   | QueryObject
-  | [QueryObject]
+  | [QueryField]
 
 type QueryObject = { [key: string]: QueryField }
 
@@ -21,18 +21,15 @@ function transformField(key: string, value: QueryField): string {
     return transformField(key, value[0])
   }
   if (typeof value === 'object') {
-    return `${key} {
-      ${transformObject(value)}
-    }`
+    return `${key}{${transformObject(value)}}`
   }
-  return `${key}: ${value};`
+  return key
 }
 
 const transformObject = (object: QueryObject): string =>
   Object.keys(object)
     .map(key => transformField(key, object[key]))
-    .join('\n')
+    .join(' ')
 
-export const query = (object: QueryObject): string => `query {
-  ${transformObject(object)}
-}`
+export const query = (name: string, object: QueryObject): string =>
+  `query ${name}{${transformObject(object)}}`
