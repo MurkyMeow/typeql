@@ -1,5 +1,5 @@
 import tape from 'tape'
-import { query } from '../index'
+import { transform } from '../index'
 
 const gql = ([literal]: TemplateStringsArray) => literal
   .replace(/\n/g, '')
@@ -10,14 +10,14 @@ const gql = ([literal]: TemplateStringsArray) => literal
   .replace(/\.\.\. /g, '...')
 
 tape('transform query', t => {
-  const actual = query('Me', {
+  const actual = transform('query', 'Me', {
     me: {
       id: 'Int!',
       photo: 'String',
-      friends: {
+      friends: [{
         id: 'Int!',
         photo: 'String',
-      },
+      }],
     },
   })
   const expected = gql`
